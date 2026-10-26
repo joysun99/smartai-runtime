@@ -1,0 +1,8 @@
+# Release archives are attached to GitHub Releases, not committed to Git.
+*.tar.gz
+*.part
+.staging/
+packages/
+.env
+__pycache__/
+upload-sources.json
