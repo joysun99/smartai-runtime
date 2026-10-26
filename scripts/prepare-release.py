@@ -15,7 +15,7 @@ from urllib.parse import quote
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE_SHA256 = "23db2625a88c1ec291e97cfd20cbb03fcc2e26cf971544ff1460940b5f61ae3e"
+SOURCE_SHA256 = "c3e12e4654092cb0b9b54a2fb89b947753111a37facfe6754a8c0538234efdc1"
 REPOSITORY = "joysun99/smartai-runtime"
 
 
@@ -110,7 +110,8 @@ def prepare(args):
         name = record["archive"]
         if Path(name).name != name or not name.endswith(".tar.gz"):
             raise ValueError(f"unsafe archive name: {name}")
-        directory = (args.collector_dir if record["service"] == "otelcol" else
+        directory = (args.cuda_dir if record["backend"] == "cuda" else
+                     args.collector_dir if record["service"] == "otelcol" else
                      args.tts_dir if record["service"] == "kokoro" else args.m0_dir)
         path = directory / name
         manifest, licenses, unpacked = inspect_archive(path, record)
@@ -145,6 +146,7 @@ if __name__ == "__main__":
     parser.add_argument("--tag", required=True)
     parser.add_argument("--m0-dir", type=Path, required=True)
     parser.add_argument("--tts-dir", type=Path, required=True)
+    parser.add_argument("--cuda-dir", type=Path, required=True)
     parser.add_argument("--collector-dir", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     arguments = parser.parse_args()

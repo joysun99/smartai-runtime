@@ -6,13 +6,14 @@
 
 计划使用一个固定标签的 GitHub Release：8 个 `.tar.gz` 附件、`catalog.json`、`SHA256SUMS`、`release-inventory.json`。目录 schema 2 的 `archive_url` 指向固定标签的附件 URL，不使用会变化的 `latest`。模型文件不会进入附件。GitHub 普通 Git 拒绝超过 100 MiB 的文件，而本批最大归档约 1.85 GB；Release 单附件须小于 2 GiB，所以归档只放 Release 附件。仓库保留清单、校验脚本与审查记录，不使用 Git LFS。
 
-准备元数据时，设置 `SMARTAI_RELEASE_TAG`、`SMARTAI_M0_ARCHIVES`、`SMARTAI_TTS_ARCHIVES`、`SMARTAI_COLLECTOR_ARCHIVES`，分别指向固定标签和已构建并核对的归档目录：
+准备元数据时，设置 `SMARTAI_RELEASE_TAG`、`SMARTAI_M0_ARCHIVES`、`SMARTAI_TTS_ARCHIVES`、`SMARTAI_CUDA_ARCHIVES`、`SMARTAI_COLLECTOR_ARCHIVES`。CUDA 候选从独立目录读取，避免误用已废弃的旧 CUDA 归档：
 
 ```bash
 python3 scripts/prepare-release.py \
   --tag "$SMARTAI_RELEASE_TAG" \
   --m0-dir "$SMARTAI_M0_ARCHIVES" \
   --tts-dir "$SMARTAI_TTS_ARCHIVES" \
+  --cuda-dir "$SMARTAI_CUDA_ARCHIVES" \
   --collector-dir "$SMARTAI_COLLECTOR_ARCHIVES" \
   --output ".staging/$SMARTAI_RELEASE_TAG"
 ```

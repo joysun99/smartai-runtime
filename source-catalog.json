@@ -287,20 +287,20 @@
       "worker_sha256": "4a0cc53dfb3f1c234a8736cd1d4db0b31aa822b4b47eaa2c6cbe852281350e78"
     },
     {
-      "id": "kokoro-sherpa-v1.13.8-ort1.28.2-worker-m2.0-4a0cc53dfb3f-linux-amd64-cuda",
+      "id": "kokoro-sherpa-v1.13.8-ort1.28.2-worker-m2.0-4a0cc53dfb3f-unmodified-nvidia-r1-linux-amd64-cuda",
       "service": "kokoro",
       "backend": "cuda",
-      "archive": "kokoro-sherpa-v1.13.8-ort1.28.2-worker-m2.0-4a0cc53dfb3f-linux-amd64-cuda.tar.gz",
-      "archive_bytes": 1846784436,
-      "archive_sha256": "a95e6a727bca094294be92cac60b1c2693ec067c80bd7a1a0c4e0a26884905a2",
-      "manifest_sha256": "758c97c7362053dafa75873b66945f9a447ea3a0bf658b31d1257bbc0da2c52c",
+      "archive": "kokoro-sherpa-v1.13.8-ort1.28.2-worker-m2.0-4a0cc53dfb3f-unmodified-nvidia-r1-linux-amd64-cuda.tar.gz",
+      "archive_bytes": 1846704532,
+      "archive_sha256": "0dc81500690db648ea57ea7325570e3d8eaebe919dcf75acc55f29825c4bc571",
+      "manifest_sha256": "eebca9e465076a618e7bad59aab8487f6a74c543a95fb2cf1123c76d046a3ea4",
       "payload_files": 56,
       "minimum_glibc_symbol_version": "2.38",
       "entrypoints": {
         "probe": "bin/tts-probe",
         "worker": "bin/smartai-tts-worker"
       },
-      "version": "sherpa-v1.13.8-ort1.28.2-worker-m2.0-4a0cc53dfb3f",
+      "version": "sherpa-v1.13.8-ort1.28.2-worker-m2.0-4a0cc53dfb3f-unmodified-nvidia-r1",
       "external_libraries": {
         "librt.so.1": "host-glibc",
         "libpthread.so.0": "host-glibc",
@@ -314,7 +314,7 @@
         "libstdc++6:amd64": "14.2.0-19",
         "zlib1g:amd64": "1:1.3.dfsg+really1.3.1-1+b1"
       },
-      "maturity": "m2-local-candidate",
+      "maturity": "m3-release-candidate-pending",
       "library_dirs": [
         "lib"
       ],
@@ -366,13 +366,13 @@
       "cuda_code_architectures": null
     },
     {
-      "id": "llama-b11878-m0.2-linux-amd64-cuda",
+      "id": "llama-b11878-m0.2-unmodified-nvidia-r1-linux-amd64-cuda",
       "service": "llama",
       "backend": "cuda",
-      "archive": "llama-b11878-m0.2-linux-amd64-cuda.tar.gz",
-      "archive_bytes": 787764202,
-      "archive_sha256": "a7ad6a77af4d12de6935cb0cb55e0196e07710c5d9f1fcf90a498e136c9b8ad7",
-      "manifest_sha256": "1d5aa30103e910d7a33deb09820fe1f976aed79d506fbd904d9465b9ec49a4dc",
+      "archive": "llama-b11878-m0.2-unmodified-nvidia-r1-linux-amd64-cuda.tar.gz",
+      "archive_bytes": 787738095,
+      "archive_sha256": "0311c7972abfbaf17fcc16baa4c1c2d50ea6b298c0785730f5726d5cfd3ba2f5",
+      "manifest_sha256": "b3001917be5c20b8a6a76123395bb8bf0fd72d6f6492d5a705d3ed0af8a3b792",
       "payload_files": 68,
       "minimum_glibc_symbol_version": "2.38",
       "entrypoints": {
@@ -380,7 +380,7 @@
         "benchmark": "bin/llama-bench",
         "completion": "bin/llama-completion"
       },
-      "version": "b11878-m0.2",
+      "version": "b11878-m0.2-unmodified-nvidia-r1",
       "external_libraries": {
         "libc.so.6": "host-glibc",
         "libm.so.6": "host-glibc",
@@ -397,7 +397,7 @@
         "zlib1g:amd64": "1:1.3.dfsg+really1.3.1-1+b1",
         "libzstd1:amd64": "1.5.7+dfsg-1"
       },
-      "maturity": "m0-local-candidate",
+      "maturity": "m3-release-candidate-pending",
       "library_dirs": [
         "bin"
       ],
@@ -436,20 +436,20 @@
       "cuda_code_architectures": null
     },
     {
-      "id": "whisper-v1.9.5-avx2-linux-amd64-cuda",
+      "id": "whisper-v1.9.5-avx2-unmodified-nvidia-r1-linux-amd64-cuda",
       "service": "whisper",
       "backend": "cuda",
-      "archive": "whisper-v1.9.5-avx2-linux-amd64-cuda.tar.gz",
-      "archive_bytes": 640888204,
-      "archive_sha256": "ce25f9ceb715da1bbc72d565808c40ba3dfaabd9c20f45944159e486d17a65b7",
-      "manifest_sha256": "48e35e0c9263f241ec37cf99cce6a39639ee0cbff9165883fe43bf025a10ef42",
+      "archive": "whisper-v1.9.5-avx2-unmodified-nvidia-r1-linux-amd64-cuda.tar.gz",
+      "archive_bytes": 640875481,
+      "archive_sha256": "6b36f9749f5865e335bcaac868b39d7f27be38be63c8d8e911c7e1cd5274e588",
+      "manifest_sha256": "1dbe9dcfd33223da77e60e607f1eabf6c3e99eae7bb1f240cfb46bfb415c3a6c",
       "payload_files": 37,
       "minimum_glibc_symbol_version": "2.38",
       "entrypoints": {
         "server": "bin/whisper-server",
         "cli": "bin/whisper-cli"
       },
-      "version": "v1.9.5-avx2",
+      "version": "v1.9.5-avx2-unmodified-nvidia-r1",
       "external_libraries": {
         "libm.so.6": "host-glibc",
         "libc.so.6": "host-glibc",
@@ -463,7 +463,7 @@
         "libgcc-s1:amd64": "14.2.0-19",
         "libgomp1:amd64": "14.2.0-19"
       },
-      "maturity": "m0-local-candidate",
+      "maturity": "m3-release-candidate-pending",
       "library_dirs": [
         "lib"
       ],
@@ -473,5 +473,5 @@
       ]
     }
   ],
-  "release_selection": "five M0 engine/FFmpeg packages, two M2 Kokoro worker packages, one M3 Collector package"
+  "release_selection": "five M0-derived engine/FFmpeg candidates, two M2-derived Kokoro worker candidates, one M3 Collector candidate"
 }

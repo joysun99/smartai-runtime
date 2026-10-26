@@ -11,9 +11,9 @@
 
 ## CUDA 运行库文件复核
 
-三个 CUDA 候选合计包含 18 处 NVIDIA 运行库实文件，涉及 12 个不同文件。上游 CUDA Runtime、cuBLAS、cuRAND 和 cuDNN 组件的归档及文件摘要已按固定版本核对；当前打包器对这些 `.so` 文件设置了 RPATH，因此包内字节与上游原件不同。重放该变换可以精确得到当前包内摘要，但这不构成再分发批准。
+先前的三个 CUDA 包合计包含 18 处 NVIDIA 运行库实文件，涉及 12 个不同文件；旧打包器曾对这些 `.so` 设置 RPATH，使包内字节与上游原件不同。当前源清单已换成新身份的候选包，所有 18 处文件均保留固定上游组件的原始字节；新包在 Linux/WSL amd64 上分别通过 LLM、ASR、TTS 的 CUDA 实际推理验证。旧包不得用作公开附件。
 
-[CUDA 12.8 EULA](https://docs.nvidia.com/cuda/archive/12.8.0/eula/index.html) 的附件 A 列出相关 Linux 库名，其 Linux 再分发条款要求目标代码不被修改。[cuDNN 9.10.2 协议](https://docs.nvidia.com/deeplearning/cudnn/backend/v9.10.2/reference/eula.html)另行规定运行时 `.so` 的分发范围。当前三个 CUDA 归档维持未发布状态；下一版候选须保留 NVIDIA 上游文件字节，取得新身份及摘要并重新验证加载和推理。应用分发条件及与其他组件的许可关系仍待审查。
+[CUDA 12.8 EULA](https://docs.nvidia.com/cuda/archive/12.8.0/eula/index.html) 的附件 A 列出相关 Linux 库名，其 Linux 再分发条款要求目标代码不被修改。[cuDNN 9.10.2 协议](https://docs.nvidia.com/deeplearning/cudnn/backend/v9.10.2/reference/eula.html)另行规定运行时 `.so` 的分发范围。保留原始字节只解决文件修改这一项；应用分发条件、声明交付及与其他组件的许可关系仍待审查。三个新 CUDA 归档继续保持未发布。
 
 ## Collector 官方 SBOM 核对
 
