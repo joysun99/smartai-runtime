@@ -9,6 +9,12 @@
 | FFmpeg CPU | 包内 Debian 组件版权文件 | 实际启用的 GPL/LGPL/非自由构建选项、完整依赖闭包、相应源码与修改/构建方式 |
 | Collector CPU | 官方归档摘要、上游 README、[固定标签的 Apache 2.0 文本](../licenses/README.md)、经摘要核对的官方 SPDX 2.3 SBOM | 核对二进制中第三方模块的许可证与声明文本，并决定随 Release 提供材料的方式；当前包装归档无 `licenses/` 文件 |
 
+## CUDA 运行库文件复核
+
+三个 CUDA 候选合计包含 18 处 NVIDIA 运行库实文件，涉及 12 个不同文件。上游 CUDA Runtime、cuBLAS、cuRAND 和 cuDNN 组件的归档及文件摘要已按固定版本核对；当前打包器对这些 `.so` 文件设置了 RPATH，因此包内字节与上游原件不同。重放该变换可以精确得到当前包内摘要，但这不构成再分发批准。
+
+[CUDA 12.8 EULA](https://docs.nvidia.com/cuda/archive/12.8.0/eula/index.html) 的附件 A 列出相关 Linux 库名，其 Linux 再分发条款要求目标代码不被修改。[cuDNN 9.10.2 协议](https://docs.nvidia.com/deeplearning/cudnn/backend/v9.10.2/reference/eula.html)另行规定运行时 `.so` 的分发范围。当前三个 CUDA 归档维持未发布状态；下一版候选须保留 NVIDIA 上游文件字节，取得新身份及摘要并重新验证加载和推理。应用分发条件及与其他组件的许可关系仍待审查。
+
 ## Collector 官方 SBOM 核对
 
 官方 v0.150.1 Release 为 `otelcol-contrib_0.150.1_linux_amd64.tar.gz` 提供[同名 SPDX 2.3 SBOM](https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.150.1/otelcol-contrib_0.150.1_linux_amd64.tar.gz.sbom.json)，SHA-256 为 `0cb68ab1ef984b9bd032abe230f73e7178adede4e7d5c6ff4714419585f21db9`。已核对 smartai 包内二进制的 Go 构建信息：1,019 个依赖全部与 SBOM 包名及版本匹配；SBOM 共列 1,022 个包，额外三项分别是主模块、Go 标准库和官方归档。四项 `licenseConcluded` 为 `NOASSERTION`，其中一项是第三方 Go 依赖；1,021 项 `licenseDeclared` 为 `NOASSERTION`。
