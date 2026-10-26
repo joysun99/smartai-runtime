@@ -6,8 +6,18 @@
 | --- | --- | --- |
 | llama CPU/CUDA、Whisper CPU/CUDA | 包内上游许可证与 Debian 组件版权文件 | 具体构建选项、源代码/变更及第三方库义务；CUDA 包中的 NVIDIA 文件清单与版本对应再分发条款 |
 | Kokoro 常驻 worker CPU/CUDA | 包内 sherpa-onnx、ONNX Runtime、eSpeak、Go 与第三方声明；包含正式 worker 和旧探针 | 静态 eSpeak GPL-3.0-or-later 的完整对应源码和构建配方、组合程序的许可兼容性；worker/探针源码的公开许可；CUDA 包中的 NVIDIA/ONNX Runtime 条款 |
-| FFmpeg CPU | 包内 Debian 组件版权文件 | 实际启用的 GPL/LGPL/非自由构建选项、完整依赖闭包、相应源码与修改/构建方式 |
+| FFmpeg CPU | 包内 Debian 组件版权文件；已读取二进制报告的构建选项 | 完整依赖闭包、相应源码与修改/构建方式及逐项许可核对 |
 | Collector CPU | 官方归档摘要、上游 README、[固定标签的 Apache 2.0 文本](../licenses/README.md)、经摘要核对的官方 SPDX 2.3 SBOM | 核对二进制中第三方模块的许可证与声明文本，并决定随 Release 提供材料的方式；当前包装归档无 `licenses/` 文件 |
+
+## Kokoro 原生库对应源码勘误
+
+两个 TTS 候选包的 `runtime.json` 将 eSpeak NG 静态依赖标为 `GPL-3.0-or-later`，并记录提交 `ed530aa113046142eb5115cf2fc9157854d0ffe1`。但 [sherpa-onnx v1.13.8 的 Piper 下载配方](https://github.com/k2-fsa/sherpa-onnx/blob/v1.13.8/cmake/piper-phonemize.cmake)引用的 [Piper 源码](https://github.com/csukuangfj/piper-phonemize/blob/f3ff95afc03640bc1399e113e83361192a2fafb4/CMakeLists.txt)默认指向另一个 eSpeak NG 提交 `7251208ee427ef87e94f39d0e99b15d287224ed6`，且允许使用外部构建树。无法仅凭这些资料证明两个上游 Linux 预编译库实际包含哪个提交。原有提交号应视为**未核实的来源声明**；在取得对应构建证明或自行重建、复验并提供完整源码材料前，两包继续保持未发布。
+
+上游 [v2.0.0 移除 eSpeak 的迁移说明](https://github.com/k2-fsa/sherpa-onnx/issues/3731)提供未来替代路线，但当前 smartai 的 Kokoro 文本前端和试听尚未按新版重新验收。
+
+## FFmpeg 构建选项初核
+
+候选包中 `ffmpeg -version` 报告版本 `7.1.5-0+deb13u1`，构建选项包含 `--enable-gpl`、`--enable-libx264`、`--enable-libx265`、`--enable-libxvid` 和 `--enable-shared`；未出现 `--enable-nonfree`。这只是二进制自报的配置，不能代替对包内全部 Debian 库、具体源码与版权文件的核对，也不能由“未出现 nonfree”推断整包已经符合再分发条件。
 
 ## CUDA 运行库文件复核
 
