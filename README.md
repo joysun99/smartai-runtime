@@ -1,11 +1,16 @@
 # smartai-runtime
 
-smartai 的可选原生运行时候选仓库。当前记录 Linux/WSL amd64 的 8 个固定候选包（LLM、ASR、TTS 常驻 worker、FFmpeg 和 OpenTelemetry Collector）；模型权重不在运行时包中。
+smartai CLI 和可选原生运行时的公开发布仓库。大归档放在 GitHub Release 附件；模型权重由 smartai 按独立模型目录下载。
 
-**状态：候选身份已登记，归档尚未在本仓库公开发布。** `source-catalog.json` 记录从 smartai 项目固定的归档大小、SHA-256、包内清单摘要和依赖信息。它是来源清单，不是可供 `smartai runtime install` 使用的在线 feed。只有 Release 附件全部上传、校验和许可证材料核对通过后，才会发布相应版本的 `catalog.json`。
+## 已公开版本
 
-发布布局、校验命令和准入条件见 [发布指南](docs/release-process.md)。发布记录必须区分预发布验证、GitHub 附件已上传和独立网络下载验证。
+| 对象 | 版本 | 平台与范围 | 发布附件 |
+| --- | --- | --- | --- |
+| smartai CLI | `0.4.0-alpha.5` | Linux/WSL、Windows amd64 | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v0.4.0-alpha.5) |
+| runtimes | `1.0.0-alpha.6` | Linux/WSL、Windows amd64，CPU；LLM、ASR、TTS、FFmpeg | [runtimes Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.0-alpha.6) |
 
-当前候选仅覆盖 Debian 13.7 / WSL2 上验证过的 Linux amd64 CPU/CUDA 组合，以及 Collector CPU。原生 Linux、Windows 和 Vulkan 需要各自构建与验证。CUDA 包依赖宿主驱动；发现 GPU 不代表能力检查通过。
+两个版本均为预发布，需显式选择。CLI 安装器及版本列表位于 [smartai-cli-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-cli-index)；运行时完整版本列表和预发布目录位于 [smartai-runtime-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-runtime-index)。`catalog-all.json` 列出预发布运行时；`catalog-v3.json` 仅用于正式稳定版推荐，目前为空。runtime 组合要求 smartai CLI `0.4.0-alpha.5` 或更新版本。
 
-源项目：smartai。仓库公开内容只保存运行时候选身份和发布资料。
+每个运行时归档附有 `SOURCE_MANIFEST.json` 和许可证材料；对应 Release 的 `SOURCES.md`、`source-origins.json` 标明第三方来源、锁定版本和 SHA-256。FFmpeg/LAME 原始源码及 Kokoro worker 源码另作附件。CLI 的使用条款、免责声明和 Go 依赖许可证位于二进制包的 `INSTALL.md`，第一方 CLI 源码未公开。
+
+以上附件已按发布端大小和摘要核对，并从匿名 HTTPS 下载全部 34 个新附件再次核对。Linux/WSL 与 Windows 原生 CPU 的安装、四种 runtime、固定模型及 LLM/ASR/TTS 用户流程已验证；GPU、其他平台和广泛语言质量仍待验证。旧 `source-catalog.json` 是历史候选快照，**不是**在线安装目录；旧候选的许可状态见 [许可审查](docs/license-review.md)。

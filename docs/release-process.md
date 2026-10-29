@@ -1,5 +1,7 @@
 # 候选运行时发布流程
 
+> 本文记录旧 `source-catalog.json` 候选的流程；这些候选仍未发布。新流水线已公开 `smartai-v0.4.0-alpha.5` 与 `runtimes-v1.0.0-alpha.6`，见仓库 [README](../README.md)。新版本以独立 CLI / runtimes Release 和各自版本索引发布，不能把本文的旧候选摘要当作新附件。
+
 当前仓库只保存固定候选身份；8 个归档尚未成为公开 Release 附件。`source-catalog.json` 记录五个引擎/FFmpeg 包、两个 Kokoro 常驻 worker 包和一个 Collector 包的固定摘要。TTS 候选具备正式 worker 入口；探针专用包不进入在线推荐。归档来源目录由发布者显式指定，不属于公开仓库内容。
 
 ## 布局与准备
