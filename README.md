@@ -6,7 +6,7 @@ smartai CLI 和可选原生运行时的公开发布仓库。归档位于 GitHub 
 
 | 对象 | 版本 | 范围 | 附件 |
 | --- | --- | --- | --- |
-| smartai CLI | `0.4.0-alpha.8` | Linux/WSL、Windows amd64 | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v0.4.0-alpha.8) |
+| smartai CLI | `0.4.0-alpha.9` | Linux/WSL、Windows amd64 | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v0.4.0-alpha.9) |
 | runtimes | `1.0.0-alpha.8` | Linux amd64 CPU：LLM、Whisper ASR、Kokoro TTS、FFmpeg；glibc 2.36 基线 | [CPU runtime Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.0-alpha.8) |
 | runtimes | `1.0.0-alpha.7` | Linux/WSL CUDA、Windows amd64 CPU；旧 Linux CPU 包仍保留 | [runtime Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.0-alpha.7) |
 
@@ -14,7 +14,7 @@ smartai CLI 和可选原生运行时的公开发布仓库。归档位于 GitHub 
 
 ## 安装与管理
 
-下载最新版 `install.sh` 或 `install.ps1`，显式指定 CLI 版本 `0.4.0-alpha.8`。安装参数、私有 Windows daemon 快捷方式与授权说明见 [控制台访问指南](docs/console-access.md)和随包 `INSTALL.md`。CLI 第一方源码暂不公开，免费使用条款及免责声明、Go 第三方许可证随包提供。
+下载最新版 `install.sh` 或 `install.ps1`，显式指定 CLI 版本 `0.4.0-alpha.9`。安装参数、私有 Windows daemon 快捷方式与授权说明见 [控制台访问指南](docs/console-access.md)和随包 `INSTALL.md`。CLI 第一方源码暂不公开，免费使用条款及免责声明、Go 第三方许可证随包提供。
 
 启动后默认提供 Web Console。资源中心将 Runtime 和 Models 分组；勾选“包含预发布运行包”并刷新，预览后确认下载，完成后选择完整运行包、模型和 FFmpeg 显式启动服务。CLI 可使用：
 
@@ -45,3 +45,7 @@ alpha.8 从锁定 Debian 12/GCC 12 sysroot 构建源码组件，并选择同基�
 已有验收包含 Linux/WSL CPU、Windows 原生 CPU 的固定模型与三服务流程，以及 WSL CUDA 逐项服务 API；CUDA 不包含宿主驱动。Windows CUDA、Vulkan、其他硬件、干净 OS、长期负载和广泛语言质量尚未据此验收。历史 `source-catalog.json` 是候选快照，不是在线安装 feed；旧候选许可状态见[许可审查](docs/license-review.md)。
 
 alpha.8 的 CLI 8 个附件和 CPU runtime 18 个附件均已通过匿名 HTTPS 全量摘要校验，公开安装器已在 Linux/WSL 和 Windows 实际试装。完整 runtime 目录现为 23 项，稳定目录仍为空；公开安装不等于重复公网模型推理验收。
+
+CLI alpha.9 的 Linux/Windows 安装器默认覆盖已有普通上版备份，仅保留紧邻上版；同版本复装不轮换备份，损坏包不改变现有程序及备份。新脚本已同步到 smartai-cli-index，也支持显式安装 alpha.8。请使用索引入口的新安装器，旧固定版本随附脚本保留原行为。
+
+alpha.9 的 8 个发布附件均已通过匿名 HTTPS 与 SHA-256；公开新脚本在 Linux/Windows 已有备份时显式安装 alpha.8 的验证通过。旧脚本已删除的上次临时归档无法复用，首次换新脚本仍需下载一次。

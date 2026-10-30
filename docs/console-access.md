@@ -1,6 +1,6 @@
 # 控制台访问与 API 设置
 
-本文适用于 CLI `0.4.0-alpha.7` 及更新版本，当前建议 `0.4.0-alpha.8`；旧 alpha.6 尚无设置菜单和多 Key 管理。默认 API、管理、控制台分别监听 `127.0.0.1:18080/18081/18082`，推理服务不会因访问网页而自动下载或启动。
+本文适用于 CLI `0.4.0-alpha.7` 及更新版本，当前建议 `0.4.0-alpha.9`；旧 alpha.6 尚无设置菜单和多 Key 管理。默认 API、管理、控制台分别监听 `127.0.0.1:18080/18081/18082`，推理服务不会因访问网页而自动下载或启动。
 
 ## Runtime 与 Models
 
@@ -124,3 +124,17 @@ smartai --json config show
 ```
 
 第二条用于核对实际数据目录；日志位于其中的 `daemon/daemon.log` 和 `daemon/requests.jsonl`。默认不记录用户文本、原始音频或 Key。当前 `observability.log_level` 字段尚未控制日志过滤，设为 `debug` 不会额外开启原生引擎输出。
+
+
+## 安装器的滚动备份
+
+alpha.9 安装器默认以当前程序覆盖上版备份，只保留一份 `smartai.previous` / `smartai.previous.exe`，继续使用本次已经下载并校验的归档安装。同版本同摘要复装保留现有备份；运行中的程序、未知安装归属、损坏包以及备份链接/目录仍拒绝替换。
+
+如本地 `install.sh` 提示“已有上版备份，未覆盖”，先更新脚本。以下仍安装 alpha.8，脚本和目标 CLI 版本可以分别选择：
+
+```bash
+curl -fL https://github.com/joysun99/smartai-runtime/releases/download/smartai-cli-index/install.sh -o install.sh
+bash install.sh --version 0.4.0-alpha.8
+```
+
+Windows 使用同一索引入口的 `install.ps1`，旧固定 Release 的附件不替换。旧脚本失败退出时已删除临时归档，因此首次重试仍需下载一次；新脚本不会再因已有普通备份中断升级。
