@@ -1,6 +1,6 @@
 # 控制台访问与 API 设置
 
-本文适用于 CLI `0.4.0-alpha.7`；旧 alpha.6 尚无设置菜单和多 Key 管理。默认 API、管理、控制台分别监听 `127.0.0.1:18080/18081/18082`，推理服务不会因访问网页而自动下载或启动。
+本文适用于 CLI `0.4.0-alpha.7` 及更新版本，当前建议 `0.4.0-alpha.8`；旧 alpha.6 尚无设置菜单和多 Key 管理。默认 API、管理、控制台分别监听 `127.0.0.1:18080/18081/18082`，推理服务不会因访问网页而自动下载或启动。
 
 ## Runtime 与 Models
 
@@ -110,3 +110,17 @@ http:
 ```
 
 同一控制台当前只配置一个外部 URL。代理部署、证书和防火墙由部署方配置；本仓库的受控 HTTP 测试不等于用户真实 Nginx/Traefik 部署已验收。
+
+
+## glibc 检查与日志
+
+在运行 daemon 的同一用户、相同配置和数据目录执行 `smartai --json runtime check <完整ID>`。换用 root 会读取另一套默认登记，可能显示“资源未登记”。当报告为预期 glibc 2.38、实际 2.36 时，alpha.7 的相关 Linux CPU 二进制不能使用；请安装 alpha.8 新 CPU 包并在服务中选择新 ID，复用原模型。修复包通过实际 2.36 用户态检查，不要求用户替换系统 libc。
+
+生命周期和结构化请求日志默认启用。例如：
+
+```bash
+smartai service logs asr --lines 50 --follow
+smartai --json config show
+```
+
+第二条用于核对实际数据目录；日志位于其中的 `daemon/daemon.log` 和 `daemon/requests.jsonl`。默认不记录用户文本、原始音频或 Key。当前 `observability.log_level` 字段尚未控制日志过滤，设为 `debug` 不会额外开启原生引擎输出。

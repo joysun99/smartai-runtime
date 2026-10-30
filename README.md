@@ -1,36 +1,47 @@
 # smartai-runtime
 
-smartai CLI 和可选原生运行时的公开发布仓库。大归档放在 GitHub Release 附件；模型权重由 smartai 按独立模型目录下载。
+smartai CLI 和可选原生运行时的公开发布仓库。归档位于 GitHub Release；模型按独立目录下载，不放入 runtime 包。
 
-## 已公开版本
+## 当前版本
 
-| 对象 | 版本 | 平台与范围 | 发布附件 |
+| 对象 | 版本 | 范围 | 附件 |
 | --- | --- | --- | --- |
-| smartai CLI | `0.4.0-alpha.7` | Linux/WSL、Windows amd64 | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v0.4.0-alpha.7) |
-| runtimes | `1.0.0-alpha.7` | Linux/WSL CPU/CUDA、Windows amd64 CPU；LLM、ASR、TTS、FFmpeg | [runtimes Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.0-alpha.7) |
+| smartai CLI | `0.4.0-alpha.8` | Linux/WSL、Windows amd64 | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v0.4.0-alpha.8) |
+| runtimes | `1.0.0-alpha.8` | Linux amd64 CPU：LLM、Whisper ASR、Kokoro TTS、FFmpeg；glibc 2.36 基线 | [CPU runtime Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.0-alpha.8) |
+| runtimes | `1.0.0-alpha.7` | Linux/WSL CUDA、Windows amd64 CPU；旧 Linux CPU 包仍保留 | [runtime Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.0-alpha.7) |
 
-两个版本均为预发布，需显式选择。CLI 安装器及版本列表位于 [smartai-cli-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-cli-index)；运行时完整版本列表和预发布目录位于 [smartai-runtime-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-runtime-index)。`catalog-all.json` 列出预发布运行时；`catalog-v3.json` 仅用于正式稳定版推荐，目前为空。runtime 组合声明最低 CLI `0.4.0-alpha.6`；建议安装最新 `0.4.0-alpha.7`；runtime 的最低 CLI 仍为 alpha.6。
+以上均为预发布，需显式选择。安装器和 CLI 版本位于 [smartai-cli-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-cli-index)；runtime 版本列表和目录位于 [smartai-runtime-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-runtime-index)。`catalog-all.json` 包含预发布与历史版本，`catalog-v3.json` 只用于稳定版推荐，当前为空。runtime 最低 CLI 为 `0.4.0-alpha.6`，建议使用最新 CLI。
 
-每个运行时归档附有 `SOURCE_MANIFEST.json` 和许可证材料；对应 Release 的 `SOURCES.md`、`source-origins.json` 标明第三方来源、锁定版本和 SHA-256。FFmpeg/LAME 原始源码及 Kokoro worker 源码另作附件。CLI 的使用条款、免责声明和 Go 依赖许可证位于二进制包的 `INSTALL.md`，第一方 CLI 源码未公开。
+## 安装与管理
 
-当前 CLI 的 8 个附件与 runtime 的 32 个附件已按发布端大小和摘要核对，并通过匿名 HTTPS 完整下载校验。Linux/WSL 与 Windows 原生 CPU 的安装、四种 runtime、固定模型及 LLM/ASR/TTS 用户流程已验证；WSL CUDA 逐项服务 API 也已通过；Windows CUDA、Vulkan、其他 Linux 发行版和广泛语言质量仍待验证。旧 `source-catalog.json` 是历史候选快照，**不是**在线安装目录；旧候选的许可状态见 [许可审查](docs/license-review.md)。
+下载最新版 `install.sh` 或 `install.ps1`，显式指定 CLI 版本 `0.4.0-alpha.8`。安装参数、私有 Windows daemon 快捷方式与授权说明见 [控制台访问指南](docs/console-access.md)和随包 `INSTALL.md`。CLI 第一方源码暂不公开，免费使用条款及免责声明、Go 第三方许可证随包提供。
 
-CLI alpha.6 的 Windows 同摘要候选已通过公网 runtime/模型下载及三服务 API、私有快捷方式和退出清理；公开后 Linux/Windows 安装器实际安装与版本检查通过。Linux 完整公网推理链路针对 alpha.5；验收使用既有宿主与代理，干净 OS、直连网络和 GPU 尚未据此验收。
+启动后默认提供 Web Console。资源中心将 Runtime 和 Models 分组；勾选“包含预发布运行包”并刷新，预览后确认下载，完成后选择完整运行包、模型和 FFmpeg 显式启动服务。CLI 可使用：
 
+```bash
+smartai resource refresh --include-prereleases
+```
 
-runtime alpha.7 包含 11 个运行包，完整预发布目录共保留 19 个不可变版本。旧 CLI 的资源中心默认查询稳定目录（当前为空），如只看到模型卡片，显式设置后等待下载完成、重启 daemon，再刷新运行包目录：
+已有固定版本不会自动升级；简写绑定也不会被目录刷新改写。旧 CLI 可显式配置完整目录：
 
 ```bash
 smartai config set download.runtime_catalog https://github.com/joysun99/smartai-runtime/releases/download/smartai-runtime-index/catalog-all.json
 ```
 
-本次 alpha.7 的公开 GitHub CLI/runtime 与 Hugging Face 三模型下载、WSL CUDA 逐项 LLM JSON/SSE、ASR、TTS 三格式、控制台会话 API 安装/TTS 启停、退出清理通过。测试使用现有宿主和代理，不代表干净 OS、直连网络、三项 GPU 同时负载或新的人工试听通过。CUDA 包随附锁定来源的运行库与许可证，不含显卡驱动；最低条件和实际验证范围以包清单为准。
+默认 API 保持回环监听，设置页支持保存监听地址、多个推理 API Key 及有效期。控制台长期登录 Key 仅 CLI 可创建和删除。SSH 任意本地端口、明确 HTTPS URL 的 Nginx/Traefik 根路径和子路径部署见[访问指南](docs/console-access.md)。配置 version 3 可读取旧 v2，创建 Key 或变更配置后旧 CLI 会明确拒绝新配置。
 
+## Linux CPU 的 glibc 兼容性
 
-CLI alpha.7 提供 Runtime/Models 分组、显式预发布运行包选择、设置菜单，以及带有效期的多个推理 API Key；长期控制台登录 Key 仅 CLI 可创建和删除，重启保留，撤销同步使网页会话失效。默认 API 仍监听本机，可在创建有效 Key 后保存 LAN 监听地址，下次启动生效。支持 SSH 任意本地端口和明确 HTTPS URL 的 Nginx/Traefik 根路径或子路径代理。命令与部署示例见[控制台访问指南](docs/console-access.md)。
+alpha.7 的部分 Linux CPU 依赖确实需要 glibc 2.38。glibc 2.36 主机请显式安装 alpha.8 的新 CPU 运行包，并在启动服务时选择这些完整 ID；无需替换系统 libc，也无需重新下载相同模型。对旧包反复“恢复”不能改变其二进制依赖。
 
-CLI alpha.7 的 8 个公开附件已通过匿名 HTTPS 完整下载与 SHA-256 校验，安装器及版本索引已更新。主配置为 version 3，可读取旧 v2；配置变更或创建 Key 后写入 v3，旧 CLI 会拒绝该配置，避免忽略新鉴权。请重新下载索引中的最新版安装器，显式指定 `0.4.0-alpha.7` 安装；旧安装器可能拒绝新配置版本的索引。
+alpha.8 从锁定 Debian 12/GCC 12 sysroot 构建源码组件，并选择同基线依赖。最终依赖闭包不得超过 glibc 2.36；清单保留实际最低符号要求。验收使用真实 glibc 2.36 用户态、既有宿主内核和 CPU，覆盖精确包能力、固定模型及三服务 API；这不等于另一台物理机、所有发行版或新增人工语音质量认证。CUDA/Windows runtime 的要求保持各自原清单，不据此降低。
 
-最终候选通过 Linux/Windows 原生安装，以及 CPU 两平台、WSL CUDA 逐项的 CLI/Web 资源下载、三服务 API 和退出清理。真实 Windows 另行验证两类 Key、到期、撤销、配置迁移和代理路径。受控 HTTP 测试不代表用户真实 Nginx/Traefik 配置或人工浏览器验收。
+## 发布材料与验证范围
 
-发布后新版公开安装器已在 Linux/WSL 和 Windows 实际安装 CLI alpha.7 并核对版本及许可材料；该步骤不下载模型，完整下载/API 的候选与既有公网验收范围分别如上。
+每包附 `SOURCE_MANIFEST.json`、`licenses/`，Release 的 `SOURCES.md` 和 `source-origins.json` 记录来源、版本与摘要。FFmpeg/LAME、Kokoro worker 源码单独提供；CPU alpha.8 另附对应 GCC 原始源码、Debian 补丁和源描述文件。CLI 私有实现、模型权重和用户请求不包含在这些源码附件中。
+
+公开附件通过匿名 HTTPS 完整下载与 SHA-256 后才更新发现索引，既有版本的 ID 和字节不可变。新包的归档时间使用对应源码 Git 提交时间，并保留安装后的程序及 NOTICE 时间；不是编译或安装发生时间。
+
+已有验收包含 Linux/WSL CPU、Windows 原生 CPU 的固定模型与三服务流程，以及 WSL CUDA 逐项服务 API；CUDA 不包含宿主驱动。Windows CUDA、Vulkan、其他硬件、干净 OS、长期负载和广泛语言质量尚未据此验收。历史 `source-catalog.json` 是候选快照，不是在线安装 feed；旧候选许可状态见[许可审查](docs/license-review.md)。
+
+alpha.8 的 CLI 8 个附件和 CPU runtime 18 个附件均已通过匿名 HTTPS 全量摘要校验，公开安装器已在 Linux/WSL 和 Windows 实际试装。完整 runtime 目录现为 23 项，稳定目录仍为空；公开安装不等于重复公网模型推理验收。
