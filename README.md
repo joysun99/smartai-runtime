@@ -32,3 +32,5 @@ CLI alpha.7 提供 Runtime/Models 分组、显式预发布运行包选择、设�
 CLI alpha.7 的 8 个公开附件已通过匿名 HTTPS 完整下载与 SHA-256 校验，安装器及版本索引已更新。主配置为 version 3，可读取旧 v2；配置变更或创建 Key 后写入 v3，旧 CLI 会拒绝该配置，避免忽略新鉴权。请重新下载索引中的最新版安装器，显式指定 `0.4.0-alpha.7` 安装；旧安装器可能拒绝新配置版本的索引。
 
 最终候选通过 Linux/Windows 原生安装，以及 CPU 两平台、WSL CUDA 逐项的 CLI/Web 资源下载、三服务 API 和退出清理。真实 Windows 另行验证两类 Key、到期、撤销、配置迁移和代理路径。受控 HTTP 测试不代表用户真实 Nginx/Traefik 配置或人工浏览器验收。
+
+发布后新版公开安装器已在 Linux/WSL 和 Windows 实际安装 CLI alpha.7 并核对版本及许可材料；该步骤不下载模型，完整下载/API 的候选与既有公网验收范围分别如上。
