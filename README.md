@@ -6,10 +6,10 @@ smartai CLI 和可选原生运行时的公开发布仓库。大归档放在 GitH
 
 | 对象 | 版本 | 平台与范围 | 发布附件 |
 | --- | --- | --- | --- |
-| smartai CLI | `0.4.0-alpha.6` | Linux/WSL、Windows amd64 | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v0.4.0-alpha.6) |
+| smartai CLI | `0.4.0-alpha.7` | Linux/WSL、Windows amd64 | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v0.4.0-alpha.7) |
 | runtimes | `1.0.0-alpha.7` | Linux/WSL CPU/CUDA、Windows amd64 CPU；LLM、ASR、TTS、FFmpeg | [runtimes Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.0-alpha.7) |
 
-两个版本均为预发布，需显式选择。CLI 安装器及版本列表位于 [smartai-cli-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-cli-index)；运行时完整版本列表和预发布目录位于 [smartai-runtime-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-runtime-index)。`catalog-all.json` 列出预发布运行时；`catalog-v3.json` 仅用于正式稳定版推荐，目前为空。runtime 组合声明最低 CLI `0.4.0-alpha.6`；Windows 应使用已修复在线安装目录提交问题的 `0.4.0-alpha.6`。
+两个版本均为预发布，需显式选择。CLI 安装器及版本列表位于 [smartai-cli-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-cli-index)；运行时完整版本列表和预发布目录位于 [smartai-runtime-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-runtime-index)。`catalog-all.json` 列出预发布运行时；`catalog-v3.json` 仅用于正式稳定版推荐，目前为空。runtime 组合声明最低 CLI `0.4.0-alpha.6`；建议安装最新 `0.4.0-alpha.7`；runtime 的最低 CLI 仍为 alpha.6。
 
 每个运行时归档附有 `SOURCE_MANIFEST.json` 和许可证材料；对应 Release 的 `SOURCES.md`、`source-origins.json` 标明第三方来源、锁定版本和 SHA-256。FFmpeg/LAME 原始源码及 Kokoro worker 源码另作附件。CLI 的使用条款、免责声明和 Go 依赖许可证位于二进制包的 `INSTALL.md`，第一方 CLI 源码未公开。
 
@@ -25,3 +25,10 @@ smartai config set download.runtime_catalog https://github.com/joysun99/smartai-
 ```
 
 本次 alpha.7 的公开 GitHub CLI/runtime 与 Hugging Face 三模型下载、WSL CUDA 逐项 LLM JSON/SSE、ASR、TTS 三格式、控制台会话 API 安装/TTS 启停、退出清理通过。测试使用现有宿主和代理，不代表干净 OS、直连网络、三项 GPU 同时负载或新的人工试听通过。CUDA 包随附锁定来源的运行库与许可证，不含显卡驱动；最低条件和实际验证范围以包清单为准。
+
+
+CLI alpha.7 提供 Runtime/Models 分组、显式预发布运行包选择、设置菜单，以及带有效期的多个推理 API Key；长期控制台登录 Key 仅 CLI 可创建和删除，重启保留，撤销同步使网页会话失效。默认 API 仍监听本机，可在创建有效 Key 后保存 LAN 监听地址，下次启动生效。支持 SSH 任意本地端口和明确 HTTPS URL 的 Nginx/Traefik 根路径或子路径代理。命令与部署示例见[控制台访问指南](docs/console-access.md)。
+
+CLI alpha.7 的 8 个公开附件已通过匿名 HTTPS 完整下载与 SHA-256 校验，安装器及版本索引已更新。主配置为 version 3，可读取旧 v2；配置变更或创建 Key 后写入 v3，旧 CLI 会拒绝该配置，避免忽略新鉴权。请重新下载索引中的最新版安装器，显式指定 `0.4.0-alpha.7` 安装；旧安装器可能拒绝新配置版本的索引。
+
+最终候选通过 Linux/Windows 原生安装，以及 CPU 两平台、WSL CUDA 逐项的 CLI/Web 资源下载、三服务 API 和退出清理。真实 Windows 另行验证两类 Key、到期、撤销、配置迁移和代理路径。受控 HTTP 测试不代表用户真实 Nginx/Traefik 配置或人工浏览器验收。
