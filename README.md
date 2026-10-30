@@ -6,7 +6,7 @@ smartai CLI 和可选原生运行时的公开发布仓库。归档位于 GitHub 
 
 | 对象 | 版本 | 范围 | 附件 |
 | --- | --- | --- | --- |
-| smartai CLI | `0.4.0-alpha.9` | Linux/WSL、Windows amd64 | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v0.4.0-alpha.9) |
+| smartai CLI | `0.4.0-alpha.10` | Linux/WSL、Windows amd64 | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v0.4.0-alpha.10) |
 | runtimes | `1.0.0-alpha.8` | Linux amd64 CPU：LLM、Whisper ASR、Kokoro TTS、FFmpeg；glibc 2.36 基线 | [CPU runtime Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.0-alpha.8) |
 | runtimes | `1.0.0-alpha.7` | Linux/WSL CUDA、Windows amd64 CPU；旧 Linux CPU 包仍保留 | [runtime Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.0-alpha.7) |
 
@@ -14,9 +14,9 @@ smartai CLI 和可选原生运行时的公开发布仓库。归档位于 GitHub 
 
 ## 安装与管理
 
-下载最新版 `install.sh` 或 `install.ps1`，显式指定 CLI 版本 `0.4.0-alpha.9`。安装参数、私有 Windows daemon 快捷方式与授权说明见 [控制台访问指南](docs/console-access.md)和随包 `INSTALL.md`。CLI 第一方源码暂不公开，免费使用条款及免责声明、Go 第三方许可证随包提供。
+下载最新版 `install.sh` 或 `install.ps1`，显式指定 CLI 版本 `0.4.0-alpha.10`。安装参数、私有 Windows daemon 快捷方式与授权说明见 [控制台访问指南](docs/console-access.md)和随包 `INSTALL.md`。CLI 第一方源码暂不公开，免费使用条款及免责声明、Go 第三方许可证随包提供。
 
-启动后默认提供 Web Console。资源中心将 Runtime 和 Models 分组；勾选“包含预发布运行包”并刷新，预览后确认下载，完成后选择完整运行包、模型和 FFmpeg 显式启动服务。CLI 可使用：
+启动后默认提供 Web Console。alpha.10 将 Runtime 按包发布版本、Models 按 ASR/LLM/TTS 分组，支持空闲资源确认卸载及历史任务折叠；设置页可切换 Hugging Face / hf-mirror，新计划立即生效、既有任务保持原来源。资源任务日志写 schema 3，请勿混用旧 CLI。勾选“包含预发布运行包”并刷新，预览后确认下载，完成后选择完整运行包、模型和 FFmpeg 显式启动服务。CLI 可使用：
 
 ```bash
 smartai resource refresh --include-prereleases
