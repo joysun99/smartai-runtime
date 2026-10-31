@@ -1,51 +1,71 @@
 # smartai-runtime
 
-smartai CLI 和可选原生运行时的公开发布仓库。归档位于 GitHub Release；模型按独立目录下载，不放入 runtime 包。
+smartai CLI 和原生运行包的公开分发仓库。CLI 第一方源码暂不公开；运行包和适用的 worker / 第三方对应源码通过 GitHub Release 提供。模型权重从固定上游地址下载，不放入 runtime 包。
 
 ## 当前版本
 
-| 对象 | 版本 | 范围 | 附件 |
+| 对象 | 版本 | 当前范围 | 下载 |
 | --- | --- | --- | --- |
-| smartai CLI | `0.4.0-alpha.10` | Linux/WSL、Windows amd64 | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v0.4.0-alpha.10) |
-| runtimes | `1.0.0-alpha.8` | Linux amd64 CPU：LLM、Whisper ASR、Kokoro TTS、FFmpeg；glibc 2.36 基线 | [CPU runtime Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.0-alpha.8) |
-| runtimes | `1.0.0-alpha.7` | Linux/WSL CUDA、Windows amd64 CPU；旧 Linux CPU 包仍保留 | [runtime Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.0-alpha.7) |
+| smartai CLI | `1.0.1` | Linux/WSL amd64，含 Web Console | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v1.0.1) |
+| runtimes | `1.0.1` | Linux/WSL amd64 CPU：LLM、ASR、TTS、FFmpeg、Vision | [runtime Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.1) |
 
-以上均为预发布，需显式选择。安装器和 CLI 版本位于 [smartai-cli-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-cli-index)；runtime 版本列表和目录位于 [smartai-runtime-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-runtime-index)。`catalog-all.json` 包含预发布与历史版本，`catalog-v3.json` 只用于稳定版推荐，当前为空。runtime 最低 CLI 为 `0.4.0-alpha.6`，建议使用最新 CLI。
+两类从 `1.0.1` 统一发布，旧版 Release 和附件已撤回；已安装的模型、运行包及配置不受远端撤回操作影响。当前优先完善 Linux/WSL CPU；Linux CUDA、Windows CPU、Windows CUDA 后续依次交付。当前没有 Windows/CUDA 1.0.1 下载。
 
-## 安装与管理
+运行包最低 CLI 为 `1.0.1`；具体 CPU 指令、系统库和依赖要求见各包 manifest。Linux 使用 glibc 2.36 基线；已完成本机 Linux/WSL CPU 的精确包及固定模型验证，其他环境和广泛质量需分别验收。
 
-下载最新版 `install.sh` 或 `install.ps1`，显式指定 CLI 版本 `0.4.0-alpha.10`。安装参数、私有 Windows daemon 快捷方式与授权说明见 [控制台访问指南](docs/console-access.md)和随包 `INSTALL.md`。CLI 第一方源码暂不公开，免费使用条款及免责声明、Go 第三方许可证随包提供。
+## 安装 CLI
 
-启动后默认提供 Web Console。alpha.10 将 Runtime 按包发布版本、Models 按 ASR/LLM/TTS 分组，支持空闲资源确认卸载及历史任务折叠；设置页可切换 Hugging Face / hf-mirror，新计划立即生效、既有任务保持原来源。资源任务日志写 schema 3，请勿混用旧 CLI。勾选“包含预发布运行包”并刷新，预览后确认下载，完成后选择完整运行包、模型和 FFmpeg 显式启动服务。CLI 可使用：
-
-```bash
-smartai resource refresh --include-prereleases
-```
-
-已有固定版本不会自动升级；简写绑定也不会被目录刷新改写。旧 CLI 可显式配置完整目录：
+在希望安装的目录获取最新脚本；默认安装脚本所在目录的最新稳定版，目前为 `1.0.1`：
 
 ```bash
-smartai config set download.runtime_catalog https://github.com/joysun99/smartai-runtime/releases/download/smartai-runtime-index/catalog-all.json
+mkdir -p "$HOME/smartai"
+cd "$HOME/smartai"
+curl -fL https://github.com/joysun99/smartai-runtime/releases/download/smartai-cli-index/install.sh -o install.sh
+bash install.sh
+./smartai daemon start
 ```
 
-默认 API 保持回环监听，设置页支持保存监听地址、多个推理 API Key 及有效期。控制台长期登录 Key 仅 CLI 可创建和删除。SSH 任意本地端口、明确 HTTPS URL 的 Nginx/Traefik 根路径和子路径部署见[访问指南](docs/console-access.md)。配置 version 3 可读取旧 v2，创建 Key 或变更配置后旧 CLI 会明确拒绝新配置。
+升级前先在原目录执行 `./smartai daemon stop`。可用 `bash install.sh --version 1.0.1` 指定版本，`--install-dir DIR` 指定目录，`-i` 交互确认，`--list-versions` 查看可用版本，`--release-url URL` 指定发布来源。安装器核对归档及二进制摘要，升级只保留紧邻上版备份；模型和运行数据独立保存。
 
-## Linux CPU 的 glibc 兼容性
+`install.ps1` 保留供后续 Windows 版本使用，当前稳定目录没有 Windows 程序条目。CLI 免费使用条款、免责声明和第三方 Go 通知随程序包提供。
 
-alpha.7 的部分 Linux CPU 依赖确实需要 glibc 2.38。glibc 2.36 主机请显式安装 alpha.8 的新 CPU 运行包，并在启动服务时选择这些完整 ID；无需替换系统 libc，也无需重新下载相同模型。对旧包反复“恢复”不能改变其二进制依赖。
+## Web Console 和服务管理
 
-alpha.8 从锁定 Debian 12/GCC 12 sysroot 构建源码组件，并选择同基线依赖。最终依赖闭包不得超过 glibc 2.36；清单保留实际最低符号要求。验收使用真实 glibc 2.36 用户态、既有宿主内核和 CPU，覆盖精确包能力、固定模型及三服务 API；这不等于另一台物理机、所有发行版或新增人工语音质量认证。CUDA/Windows runtime 的要求保持各自原清单，不据此降低。
+启动 daemon 后，默认访问 `http://127.0.0.1:18082/`。服务器上可通过 SSH 转发访问，例如：
 
-## 发布材料与验证范围
+```bash
+ssh -L 8888:127.0.0.1:18082 user@server
+```
 
-每包附 `SOURCE_MANIFEST.json`、`licenses/`，Release 的 `SOURCES.md` 和 `source-origins.json` 记录来源、版本与摘要。FFmpeg/LAME、Kokoro worker 源码单独提供；CPU alpha.8 另附对应 GCC 原始源码、Debian 补丁和源描述文件。CLI 私有实现、模型权重和用户请求不包含在这些源码附件中。
+随后访问 `http://127.0.0.1:8888/`；本地映射端口可自行选择。HTTPS 反向代理支持根路径与子路径，需按实际入口配置可信代理和访问来源。
 
-公开附件通过匿名 HTTPS 完整下载与 SHA-256 后才更新发现索引，既有版本的 ID 和字节不可变。新包的归档时间使用对应源码 Git 提交时间，并保留安装后的程序及 NOTICE 时间；不是编译或安装发生时间。
+- 资源中心：runtime 按发布版本、Models 按 ASR/LLM/TTS/VISION 折叠显示；显式预览并确认下载，空闲资源可卸载，历史任务默认折叠。
+- 服务管理：分别启停 LLM/ASR/TTS，以及 Vision 的人脸、OCR、图文向量和图片处理；当前实例和下次自动启用配置分别管理。
+- 设置：模型下载源、推理 API 监听地址和鉴权策略、多个 API Key 及有效期、支持的 API endpoints；控制台登录 Key 由 CLI 管理。
+- CLI：`smartai console endpoints` 查看接口，`smartai daemon status` 查看服务及 Vision 状态。推理 API 默认回环监听 `127.0.0.1:18080`。
 
-已有验收包含 Linux/WSL CPU、Windows 原生 CPU 的固定模型与三服务流程，以及 WSL CUDA 逐项服务 API；CUDA 不包含宿主驱动。Windows CUDA、Vulkan、其他硬件、干净 OS、长期负载和广泛语言质量尚未据此验收。历史 `source-catalog.json` 是候选快照，不是在线安装 feed；旧候选许可状态见[许可审查](docs/license-review.md)。
+## 安装运行包和模型
 
-alpha.8 的 CLI 8 个附件和 CPU runtime 18 个附件均已通过匿名 HTTPS 全量摘要校验，公开安装器已在 Linux/WSL 和 Windows 实际试装。完整 runtime 目录现为 23 项，稳定目录仍为空；公开安装不等于重复公网模型推理验收。
+Web Console 资源中心刷新在线目录，选择 `1.0.1` 运行包和所需模型，预览后确认下载。下载不会自动启动推理；安装后选择完整资源组合，显式启动或保存下次启用配置。也可使用：
 
-CLI alpha.9 的 Linux/Windows 安装器默认覆盖已有普通上版备份，仅保留紧邻上版；同版本复装不轮换备份，损坏包不改变现有程序及备份。新脚本已同步到 smartai-cli-index，也支持显式安装 alpha.8。请使用索引入口的新安装器，旧固定版本随附脚本保留原行为。
+```bash
+./smartai runtime catalog --remote
+./smartai runtime install whisper --backend cpu
+./smartai model pull whisper-tiny-q5_1
+```
 
-alpha.9 的 8 个发布附件均已通过匿名 HTTPS 与 SHA-256；公开新脚本在 Linux/Windows 已有备份时显式安装 alpha.8 的验证通过。旧脚本已删除的上次临时归档无法复用，首次换新脚本仍需下载一次。
+1.0.1 CPU 组合包括 llama.cpp b11878、Whisper v1.9.5、Kokoro voices / sherpa 2.0.0 / ORT 1.28.2、FFmpeg 7.1.5、Vision v0.1.0。静态校验或入口检查通过不代表模型已加载，启动显示 ready 后才能推理。
+
+可选模型包括 Whisper tiny/base/small、Qwen3-0.6B/4B、Kokoro v1.1 FP32/INT8 和三个 Vision 组合。Kokoro v1.1 提供女声 `zf_079`、男声 `zm_009`；旧 v1.0 停止新启用，新音频人工试听仍待确认。模型按固定快照、大小和摘要下载，已有安装不会被目录刷新静默升级。
+
+## 下载索引与源码材料
+
+- [smartai-cli-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-cli-index)：安装脚本、`cli-index.tsv`、CLI `versions.json`。
+- [smartai-runtime-index](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-runtime-index)：稳定目录 `catalog-v3.json`、完整目录 `catalog-all.json`、runtime `versions.json`。
+- 三个自有 Vision 小描述按 ID 和 SHA-256 固定在共享 runtime 索引，含 Vision 的 runtime Release 同时提供原件；权重及归属文件从固定上游下载。清理 runtime 版本不会删除共享描述。
+- `retired-versions.json` 记录已撤回版本；已撤回版本号不能重新发布，旧附件不再下载。
+- 每个 runtime Release 的 `SOURCES.md`、`source-origins.json`、包内 `licenses/` 和独立 worker / 对应源码附件提供适用来源与许可材料。CLI 保持私有不影响这些独立材料的提供。
+
+**GitHub 自动显示的 `Source code (zip)` / `Source code (tar.gz)` 只是本公开仓库在标签处的快照，不包含 Release 的 Assets，也不是 CLI 安装包或私有源码，无需下载。** JSON 索引请直接下载相应 Assets；worker 及对应源码使用单独命名的附件。自动源码链接由 GitHub 生成，不能像上传附件一样单独删除。
+
+仓库中的 `source-catalog.json` 保留早期候选快照，不能作为当前安装 feed。当前可下载版本以以上 Release 索引为准。
