@@ -1,6 +1,6 @@
 # 控制台访问与 API 设置
 
-本文适用于 CLI `1.0.2`；运行包继续使用 `1.0.1`。默认 API、管理、控制台分别监听 `127.0.0.1:18080/18081/18082`，推理服务不会因访问网页而自动下载或启动。
+本文适用于 CLI `1.0.3`（包含 1.0.2 功能）；运行包继续使用 `1.0.1`。默认 API、管理、控制台分别监听 `127.0.0.1:18080/18081/18082`，推理服务不会因访问网页而自动下载或启动。
 
 ## Runtime 与 Models
 
@@ -150,11 +150,11 @@ smartai --json config show
 
 alpha.9 安装器默认以当前程序覆盖上版备份，只保留一份 `smartai.previous` / `smartai.previous.exe`，继续使用本次已经下载并校验的归档安装。同版本同摘要复装保留现有备份；运行中的程序、未知安装归属、损坏包以及备份链接/目录仍拒绝替换。
 
-如本地 `install.sh` 提示“已有上版备份，未覆盖”，先更新脚本。更新脚本后指定 CLI 1.0.2：
+如本地 `install.sh` 提示“已有上版备份，未覆盖”，先更新脚本。更新脚本后指定 CLI 1.0.3：
 
 ```bash
 curl -fL https://github.com/joysun99/smartai-runtime/releases/download/smartai-cli-index/install.sh -o install.sh
-bash install.sh --version 1.0.2
+bash install.sh --version 1.0.3
 ```
 
 Windows 使用同一索引入口的 `install.ps1`，旧固定 Release 的附件不替换。旧脚本失败退出时已删除临时归档，因此首次重试仍需下载一次；新脚本不会再因已有普通备份中断升级。
@@ -170,3 +170,8 @@ smartai update --no-proxy --timeout 30s
 ```
 
 只查询当前平台的 CLI 索引，默认正式版，可用 `--release-url URL` 选择其他发布源。沿用下载代理，支持 `--proxy`；不需要 GitHub 登录，也不使用 HF Token。发现新版时显示对应安装脚本和指定版本安装方式，不下载程序包或启停服务。成功检测返回 0，JSON 中 `update_available` 表示是否有新版，开发版本无法比较时为 null；网络或索引错误返回非零，不自动换源。CLI 1.0.1 没有此命令，需先用新版安装脚本升级一次。
+
+
+## Vision 模型卸载后重装报 HTTP404
+
+CLI 1.0.2 的下载恢复路径遗漏了 Vision 多来源组合，卸载后重新预览 PP-OCRv5、AuraFace 等模型可能返回 `revision_unavailable`。升级到 CLI 1.0.3 后，重新预览并确认安装即可；保留现有 Hugging Face / hf-mirror 设置、固定下载计划和删除记录，无需清理数据或换成 main。恢复仍核对原完整文件身份和 SHA-256，runtime 1.0.1 无需重装。

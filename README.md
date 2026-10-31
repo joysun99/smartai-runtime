@@ -6,7 +6,7 @@ smartai CLI 和原生运行包的公开分发仓库。CLI 第一方源码暂不�
 
 | 对象 | 版本 | 当前范围 | 下载 |
 | --- | --- | --- | --- |
-| smartai CLI | `1.0.2` | Linux/WSL amd64，含 Web Console | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v1.0.2) |
+| smartai CLI | `1.0.3` | Linux/WSL amd64，含 Web Console | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v1.0.3) |
 | runtimes | `1.0.1` | Linux/WSL amd64 CPU：LLM、ASR、TTS、FFmpeg、Vision | [runtime Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.1) |
 
 两类从 `1.0.1` 统一发布，旧版 Release 和附件已撤回；已安装的模型、运行包及配置不受远端撤回操作影响。当前优先完善 Linux/WSL CPU；Linux CUDA、Windows CPU、Windows CUDA 后续依次交付。当前没有 Windows/CUDA 下载；CLI 与 runtime 版本独立，runtime 继续使用 1.0.1。
@@ -15,7 +15,7 @@ smartai CLI 和原生运行包的公开分发仓库。CLI 第一方源码暂不�
 
 ## 安装 CLI
 
-在希望安装的目录获取最新脚本；默认安装脚本所在目录的最新稳定版，目前为 `1.0.2`：
+在希望安装的目录获取最新脚本；默认安装脚本所在目录的最新稳定版，目前为 `1.0.3`：
 
 ```bash
 mkdir -p "$HOME/smartai"
@@ -25,7 +25,9 @@ bash install.sh
 ./smartai daemon start
 ```
 
-升级前先在原目录执行 `./smartai daemon stop`。可用 `bash install.sh --version 1.0.2` 指定版本，`--install-dir DIR` 指定目录，`-i` 交互确认，`--list-versions` 查看可用版本，`--release-url URL` 指定发布来源。安装器核对归档及二进制摘要，升级只保留紧邻上版备份；模型和运行数据独立保存。
+升级前先在原目录执行 `./smartai daemon stop`。可用 `bash install.sh --version 1.0.3` 指定版本，`--install-dir DIR` 指定目录，`-i` 交互确认，`--list-versions` 查看可用版本，`--release-url URL` 指定发布来源。安装器核对归档及二进制摘要，升级只保留紧邻上版备份；模型和运行数据独立保存。
+
+CLI 1.0.3 修复 Vision 下载模型卸载后重装的 `revision_unavailable` / HTTP404：保留原计划和摘要，重新预览并确认即可，HF 来源无需更改。运行包和模型版本保持不变。
 
 CLI 1.0.2 修复旧 `demo-*` 完成任务导致的 daemon 启动失败。主配置可读 version 2/3/4/5，修改保存后升级为 6；旧 CLI 无法读取 version 6。首次从 1.0.1 升级须重新下载上方新版脚本，之后可使用 `./smartai update` 检测更新。
 
