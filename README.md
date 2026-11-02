@@ -2,16 +2,41 @@
 
 smartai CLI 和原生运行包的公开分发仓库。CLI 第一方源码暂不公开；运行包和适用的 worker / 第三方对应源码通过 GitHub Release 提供。模型权重从固定上游地址下载，不放入 runtime 包。
 
-## 当前版本
+## 当前稳定版本
 
 | 对象 | 版本 | 当前范围 | 下载 |
 | --- | --- | --- | --- |
 | smartai CLI | `1.0.3` | Linux/WSL amd64，含 Web Console | [CLI Release](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v1.0.3) |
 | runtimes | `1.0.1` | Linux/WSL amd64 CPU：LLM、ASR、TTS、FFmpeg、Vision | [runtime Release](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.1) |
 
-两类从 `1.0.1` 统一发布，旧版 Release 和附件已撤回；已安装的模型、运行包及配置不受远端撤回操作影响。当前优先完善 Linux/WSL CPU；Linux CUDA、Windows CPU、Windows CUDA 后续依次交付。当前没有 Windows/CUDA 下载；CLI 与 runtime 版本独立，runtime 继续使用 1.0.1。
+两类从 `1.0.1` 统一发布，旧版 Release 和附件已撤回；已安装的模型、运行包及配置不受远端撤回操作影响。当前优先完善 Linux/WSL CPU；Linux CUDA、Windows CPU、Windows CUDA 后续依次交付。当前没有 Windows/CUDA 下载；CLI 与 runtime 版本独立；稳定运行包继续1.0.1，另有下方Vision CPU RC供显式试用。
 
 运行包最低 CLI 为 `1.0.1`；具体 CPU 指令、系统库和依赖要求见各包 manifest。Linux 使用 glibc 2.36 基线；已完成本机 Linux/WSL CPU 的精确包及固定模型验证，其他环境和广泛质量需分别验收。
+
+## CPU 预发布 RC
+
+| 对象 | RC 版本 | 范围与下载 |
+| --- | --- | --- |
+| smartai CLI | `1.1.0-rc.3` | Linux/WSL amd64；[发布说明、安装与回退](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v1.1.0-rc.3) |
+| Vision CPU runtime | `1.0.2-rc.3` | **仅Vision**；[运行包与适用源码](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.2-rc.3)；其它四项CPU运行包继续1.0.1 |
+
+RC 不替换最新正式版或默认推荐；默认安装/更新仍选择 CLI1.0.3，稳定 runtime 目录和推荐仍1.0.1。显式安装RC：
+
+```bash
+curl -fL https://github.com/joysun99/smartai-runtime/releases/download/smartai-v1.1.0-rc.3/install.sh -o install-smartai-rc.sh
+bash install-smartai-rc.sh --version 1.1.0-rc.3 --install-dir "$PWD/smartai-rc/bin"
+./smartai-rc/bin/smartai --config "$PWD/smartai-rc/config.yaml" --data-dir "$PWD/smartai-rc/data" init
+```
+
+建议独立prefix/config/data；如与稳定实例同时运行，启动前设置空闲端口。新Vision包在完整目录中显式选择：
+
+```bash
+./smartai-rc/bin/smartai --config "$PWD/smartai-rc/config.yaml" --data-dir "$PWD/smartai-rc/data" runtime install smartai-vision-v0.1.0-1.0.2-rc.3-linux-amd64-cpu --catalog https://github.com/joysun99/smartai-runtime/releases/download/smartai-runtime-index/catalog-all.json
+```
+
+RC新增基本调用CLI、已保存资源配置管理，以及每项Vision能力的线程/队列和1～3显式副本。默认2线程/1副本/2等待；副本独立加载同一模型，资源不足明确拒绝。OCR同行片段排序已修复，字形/空格等模型问题仍保留。新容量入口需CLI1.1.0-rc.3；旧CLI会拒绝version6中的新capacity字段。回退先停止RC实例，再恢复原稳定程序及原配置/数据，不用旧CLI回写新配置，不删除资产或事务。
+
+本轮有完整本地回归、精确glibc2.36用户态四能力推理和CPU2/3副本证据；广泛质量仍部分。ASR/LLM/OCR已知限制随版说明，原人工判定不合并或继承。当前版本的多平台交付/验收、新真实输入、其它浏览器、托管CI和OS隔离继续暂缓。本次不发布SenseVoice原生包/FP32模型或扩展模型许可。
 
 ## 安装 CLI
 
