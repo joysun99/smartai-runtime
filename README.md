@@ -13,19 +13,21 @@ smartai CLI 和原生运行包的公开分发仓库。CLI 第一方源码暂不�
 
 运行包最低 CLI 为 `1.0.1`；具体 CPU 指令、系统库和依赖要求见各包 manifest。Linux 使用 glibc 2.36 基线；已完成本机 Linux/WSL CPU 的精确包及固定模型验证，其他环境和广泛质量需分别验收。
 
-## 新语音候选预发布
+## 当前 CPU 预发布
 
 | 对象 | 版本 | 下载与说明 |
 | --- | --- | --- |
-| CLI | `1.1.0-rc.7` | [Release、ZipVoice在线安装与回退](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v1.1.0-rc.7) |
+| CLI | `1.1.0-rc.9` | [Release、运行包/模型联动及宿主库兼容](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v1.1.0-rc.9) |
 | Fun-ASR-Nano / ZipVoice-Distill CPU runtimes | `1.0.3-rc.4` | [两包、模型准备与适用源码](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.3-rc.4)；最低CLI rc.6 |
+
+CLI rc.9 将资源准备统一为先选运行包、再选匹配的已安装模型；切换时保留兼容选择或清空不兼容模型，保存/启用/启动接口也会拒绝错误组合。新增 `runtime host-library inspect/list/trust/revoke`，按本机完整运行包/清单和库路径/实际目标/SHA显式授权宿主扩展，默认严格检查保持，不修改系统预加载、不自动信任任何库。普通能力报告仍schema1，使用授权的报告为schema2，旧CLI不能混用回写。rc.7的ZipVoice在线安装继续保留，原rc.7/rc.6附件可显式选择。
 
 仅Linux/WSL amd64 CPU，glibc>=2.36、AVX2/FMA/F16C。默认稳定CLI1.0.3/runtime1.0.1和Whisper/Kokoro推荐保持；已有模型/runtime绑定不会自动改变。
 
 ```bash
-curl -fL https://github.com/joysun99/smartai-runtime/releases/download/smartai-v1.1.0-rc.7/install.sh -o install-smartai-rc.sh
-bash install-smartai-rc.sh --version 1.1.0-rc.7 --install-dir "$PWD/smartai-rc7/bin"
-./smartai-rc7/bin/smartai --config "$PWD/smartai-rc7/config.yaml" --data-dir "$PWD/smartai-rc7/data" init
+curl -fL https://github.com/joysun99/smartai-runtime/releases/download/smartai-v1.1.0-rc.9/install.sh -o install-smartai-rc.sh
+bash install-smartai-rc.sh --version 1.1.0-rc.9 --install-dir "$PWD/smartai-rc9/bin"
+./smartai-rc9/bin/smartai --config "$PWD/smartai-rc9/config.yaml" --data-dir "$PWD/smartai-rc9/data" init
 ```
 
 以下`smartai`指新版CLI，使用所需的专用配置/数据参数。新引擎采用[显式候选目录](https://github.com/joysun99/smartai-runtime/releases/download/smartai-runtime-index/catalog-speech.json)，包含旧普通运行包和原推荐；原catalog-all/catalog-v3保留旧CLI可读取的引擎，避免未知service破坏整个目录。
