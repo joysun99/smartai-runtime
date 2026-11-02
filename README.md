@@ -13,7 +13,36 @@ smartai CLI 和原生运行包的公开分发仓库。CLI 第一方源码暂不�
 
 运行包最低 CLI 为 `1.0.1`；具体 CPU 指令、系统库和依赖要求见各包 manifest。Linux 使用 glibc 2.36 基线；已完成本机 Linux/WSL CPU 的精确包及固定模型验证，其他环境和广泛质量需分别验收。
 
-## CPU 预发布 RC
+## 新语音候选预发布
+
+| 对象 | 版本 | 下载与说明 |
+| --- | --- | --- |
+| CLI | `1.1.0-rc.6` | [Release、独立安装与回退](https://github.com/joysun99/smartai-runtime/releases/tag/smartai-v1.1.0-rc.6) |
+| Fun-ASR-Nano / ZipVoice-Distill CPU runtimes | `1.0.3-rc.4` | [两包、模型准备与适用源码](https://github.com/joysun99/smartai-runtime/releases/tag/runtimes-v1.0.3-rc.4)；最低CLI rc.6 |
+
+仅Linux/WSL amd64 CPU，glibc>=2.36、AVX2/FMA/F16C。默认稳定CLI1.0.3/runtime1.0.1和Whisper/Kokoro推荐保持；已有模型/runtime绑定不会自动改变。
+
+```bash
+curl -fL https://github.com/joysun99/smartai-runtime/releases/download/smartai-v1.1.0-rc.6/install.sh -o install-smartai-rc.sh
+bash install-smartai-rc.sh --version 1.1.0-rc.6 --install-dir "$PWD/smartai-rc6/bin"
+./smartai-rc6/bin/smartai --config "$PWD/smartai-rc6/config.yaml" --data-dir "$PWD/smartai-rc6/data" init
+```
+
+以下`smartai`指新版CLI，使用所需的专用配置/数据参数。新引擎采用[显式候选目录](https://github.com/joysun99/smartai-runtime/releases/download/smartai-runtime-index/catalog-speech.json)，包含旧普通运行包和原推荐；原catalog-all/catalog-v3保留旧CLI可读取的引擎，避免未知service破坏整个目录。
+
+```bash
+smartai runtime install smartai-funasr-nano-v2-ort1.28.2-1.0.3-rc.4-linux-amd64-cpu --catalog https://github.com/joysun99/smartai-runtime/releases/download/smartai-runtime-index/catalog-speech.json
+smartai runtime install smartai-zipvoice-distill-v2-ort1.28.2-1.0.3-rc.4-linux-amd64-cpu --catalog https://github.com/joysun99/smartai-runtime/releases/download/smartai-runtime-index/catalog-speech.json
+smartai model pull fun-asr-nano-2512-int8
+```
+
+Web资源中心使用新版CLI显式设置 `download.runtime_catalog` 为候选目录并重启该实例；自定义目录已含候选，无需另勾预发布。Nano当前支持auto/zh/en、JSON/text；ZipVoice为固定参考音色`zipvoice_reference`，完整七文件模型需离线导入，资源来源/摘要和方法见runtime Release，不提供虚构HF地址或任意上传克隆。语音服务还需固定FFmpeg CPU包，可沿用已安装1.0.1。1～3显式副本按Nano每副本4GiB/ZipVoice每副本2GiB保守准入，预算不是内存预留。
+
+CLI同时新增可选Whisper large-v3 Q5_0、Qwen3.5-2B/4B候选和思考开关；Qwen3仍推荐，两档3.5默认关闭思考，思考可能耗尽token预算而无最终答案。新语音功能、安装、取消恢复和glibc2.36实际加载已本机验证；新模型准确率及新音频人工试听仍待进行。保持旧ASR/LLM/OCR质量限制和多平台/新输入/其它浏览器/托管CI等暂缓范围，不将技术成功当质量通过。
+
+建议独立程序、配置和数据目录；并行运行需空闲端口。回退先停止新版实例并恢复原配置，不用旧程序回写新的配置version7或模型报告schema7。旧RC和附件继续保留，未转为正式版。
+
+## 既有 CPU 预发布 RC（继续保留）
 
 | 对象 | RC 版本 | 范围与下载 |
 | --- | --- | --- |
